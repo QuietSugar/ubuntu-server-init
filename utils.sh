@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# utities
-
-AUTHOR="yuez"
-EMAIL="i@yuez.me"
-
 ROOT_DIR=$(pwd)
 SH=/bin/bash
 
@@ -14,15 +9,9 @@ YELLOW='\033[0;33m'
 GRAY='\033[0;37m'
 CLEAR='\033[0m'
 
-PREBUILT_PACKAGE_DIR="/opt/apps"
-
-# 代理的地址，如果不需要代理，可以注释掉
-HTTP_PROXY=${HTTP_PROXY:-"http://localhost:7890"}
-HTTPS_PROXY=${HTTPS_PROXY:-"http://localhost:7890"}
-SOCKS_PROXY=${SOCKS_PROXY:-"socks5://localhost:7890"}
 
 function print_logo() {
-    echo "🍰🍪🧁🍬🍨 ubuntu-server-init 🥧🎂🍦🍭🍩";                                                                          ";
+    echo "🍰🍪🧁🍬🍨 ubuntu-server-init 🥧🎂🍦🍭🍩";
 }
 
 function l_skip() {
@@ -165,45 +154,6 @@ function install_prebuilt_zipbin() {
         sudo mv "${CMD}" "${BIN_DIR}/${CMD}"
         rm "${CMD}.zip"
         l_success "${CMD} installed."
-    fi
-}
-
-function install_prebuilt_package() {
-    URL=$1
-    FILENAME=$(basename ${URL})
-    DOWNLOAD_FILE="${FILENAME}.download"
-    INSTALLED_DIR="${PREBUILT_PACKAGE_DIR}/${FILENAME%%.*}"
-
-    if [ -d "${INSTALLED_DIR}" ]; then
-        l_skip "prebuilt package ${FILENAME} already installed."
-    else
-        l_warn "installing prebuilt package ${FILENAME}"
-        http -dco "${DOWNLOAD_FILE}" "${URL}"
-        mv "${DOWNLOAD_FILE}" "${FILENAME}"
-
-        sudo mkdir -p "${INSTALLED_DIR}"
-
-        if [ "${FILENAME}" == *".tar.gz" ]; then
-            l_info "extracting ${FILENAME}..."
-            sudo tar -C "${INSTALLED_DIR}" -xzf "${FILENAME}" --strip-components 1
-            if [ $? != 0 ]; then
-                l_error "failed to install prebuilt package ${FILENAME}"
-                return 1
-            fi
-        fi
-
-        if [ "${FILENAME}" == *".zip" ]; then
-            l_info "extracting ${FILENAME}..."
-            sudo unzip -d "${INSTALLED_DIR}" "${FILENAME}"
-            if [ $? != 0 ]; then
-                l_error "failed to install prebuilt package ${FILENAME}"
-                return 1
-            fi
-        fi
-
-        rm "${FILENAME}"
-
-        l_success "${FILENAME} installed."
     fi
 }
 
