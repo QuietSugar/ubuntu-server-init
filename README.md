@@ -25,6 +25,7 @@ sudo apt install unzip
 - docker的安装可以修改成国内地址安装,应该会更快
 - 支持部分安装软件(可选)
 - 支持打印软件版本
+- 
 
 ```
 /etc/update-motd.d/11-system-info
@@ -50,6 +51,10 @@ printf " TODO: \n"
 printf " \n"
 ```
 
+- 移除软盘服务
+```
+https://blog.csdn.net/inthat/article/details/122723421
+```
 
 # 致谢
 

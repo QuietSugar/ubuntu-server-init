@@ -3,7 +3,6 @@
 . ./utils.sh
 
 # 移除多路径服务 multipath-tools
-
 if systemctl status multipathd.service >/dev/null 2>&1; then
     echo "multipathd is installed"
     if systemctl is-active multipathd.service >/dev/null 2>&1; then
@@ -38,3 +37,5 @@ if dpkg-query -s snapd >/dev/null 2>&1; then
 else
     echo "snap is not installed"
 fi
+
+ 
