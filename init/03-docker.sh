@@ -22,20 +22,28 @@ if [ ! -s "${DOCKER_SOURCE_LIST_FILE}" ]; then
         l_error "DISTRIB_CODENAME is empty."
     else
         sudo echo \
-        "deb [arch=$(dpkg --print-architecture) signed-by=${DOCKER_KEY_FILE}] https://download.docker.com/linux/ubuntu \
+        "deb [arch=$(dpkg --print-architecture) signed-by=${DOCKER_KEY_FILE}] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu \
         ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         sudo apt update
+
+        # 开始安装
+        # 如有必要,可以删除
+        # sudo apt-get remove docker docker-engine docker.io containerd runc
+        install_via_apt apt-transport-https    
+        install_via_apt ca-certificates
+        install_via_apt curl
+        install_via_apt gnupg2
+        install_via_apt software-properties-common
+
+        install_via_apt docker-ce
+        install_via_apt docker-ce-cli
+        install_via_apt containerd.io
+        install_via_apt docker-buildx-plugin
+        install_via_apt docker-compose-plugin
+        # 添加用户到docker组
+        sudo gpasswd -a $(whoami) docker
+        l_info "use docker first , please reboot machine..."
     fi
 else
     l_skip "docker repsoitory source already installed."
 fi
-
-install_via_apt docker-ce
-install_via_apt docker-ce-cli
-install_via_apt containerd.io
-install_via_apt docker-buildx-plugin
-install_via_apt docker-compose-plugin
-
-sudo gpasswd -a $(whoami) docker
-
-l_info "use docker first , please reboot machine..."
