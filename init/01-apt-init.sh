@@ -18,5 +18,6 @@ fi
 APT_ORIGINAL_FILE=/etc/apt/sources.list.d/original.list
 
 if [ -s "${APT_ORIGINAL_FILE}" ]; then
-    sudo mv ${APT_ORIGINAL_FILE} ${APT_ORIGINAL_FILE}'-back'
+    sudo rm -rf ${APT_ORIGINAL_FILE}
+    # sudo mv ${APT_ORIGINAL_FILE} ${APT_ORIGINAL_FILE}'-back'
 fi
