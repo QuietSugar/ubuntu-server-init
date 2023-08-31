@@ -10,7 +10,9 @@ DOCKER_SOURCE_LIST_FILE=/etc/apt/sources.list.d/docker.list
 if [ ! -s "${DOCKER_KEY_FILE}" ]; then
     l_info "installing gpg key..."
     sudo mkdir -m 0755 -p /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+    # https://download.docker.com/linux/ubuntu/gpg
+    curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 else
     l_skip "docker key file already installed."
 fi
