@@ -3,7 +3,7 @@
 . ./utils.sh
 
 ZSHRC_FILE="${HOME}/.zshrc"
-Z_SH_DIR="${HOME}/.z"
+Z_SH_DIR="${HOME}/working/soft/z"
 mkdir -p "${Z_SH_DIR}"
 Z_SH_FILE="${Z_SH_DIR}/z.sh"
 

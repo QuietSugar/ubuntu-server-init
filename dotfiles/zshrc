@@ -26,12 +26,11 @@ export NVM_DIR="$HOME/.nvm"
 # 执行系统
 source ~/.profile
 
-SOURCE_DIR="~/.xu/source/"
+SOURCE_DIR="${HOME}/.xu/source/"
 # 遍历执行source
 FILES=$(find "$SOURCE_DIR" -name '*.sh' | sort)
 for FILE in $FILES; do
-    l_warn "source $FILE"
     source $FILE
 done
 
-source ~/.z/z.sh
+source ~/working/soft/z/z.sh
