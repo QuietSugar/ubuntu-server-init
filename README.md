@@ -18,7 +18,14 @@ curl -o ubuntu-server-init.zip -O https://ghproxy.com/https://github.com/QuietSu
 ```
 sudo apt install unzip
 ```
+# dotfiles 相关操作
 
+```bash
+#同步
+rcup -d ./dotfiles/
+#显示全部
+lsrc -d ./dotfiles/
+```
 
 # TODO
 
