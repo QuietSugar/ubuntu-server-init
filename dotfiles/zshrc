@@ -34,3 +34,5 @@ for FILE in $FILES; do
 done
 
 source ~/working/soft/z/z.sh
+source /home/huoxu/working/soft/z/z.sh
+TZ='Asia/Shanghai'; export TZ
