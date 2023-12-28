@@ -16,6 +16,8 @@ THIS_GO_DIR="${HOME}/working/soft/go-${THIS_GO_VERSION}"
 mkdir -p $THIS_GO_DIR
 THIS_GO_BIN_FILE_PATH="${THIS_GO_DIR}/go/bin/go"
 THIS_GO_BIN_DIR_PATH="${THIS_GO_DIR}/go/bin"
+# go安装的命令的PATH
+GO_PKG_BIN_DIR_PATH="${HOME}/go/bin"
 
 GO_PROFILE="${HOME}/.xu/source/go.profile.sh"
 
@@ -27,7 +29,7 @@ if [ $? != 0 ]; then
 	http --download https://go.dev/dl/go${THIS_GO_VERSION}.linux-amd64.tar.gz -o go.tar.gz
 	sudo tar -C ${THIS_GO_DIR} -xzf go.tar.gz
 	sudo chmod a+x ${THIS_GO_BIN_FILE_PATH}
-	echo 'export PATH=$PATH:'${THIS_GO_BIN_DIR_PATH} > "${GO_PROFILE}"
+	echo 'export PATH=$PATH:'${THIS_GO_BIN_DIR_PATH}':'${GO_PKG_BIN_DIR_PATH} > "${GO_PROFILE}"
 	source "${GO_PROFILE}"
 	l_success "golang $(go version) installed."
 	rm -f go.tar.gz
