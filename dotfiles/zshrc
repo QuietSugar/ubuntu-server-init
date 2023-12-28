@@ -28,11 +28,10 @@ source ~/.profile
 
 SOURCE_DIR="${HOME}/.xu/source/"
 # 遍历执行source
-FILES=$(find "$SOURCE_DIR" -name '*.sh' | sort)
-for FILE in $FILES; do
-    source $FILE
+find "$SOURCE_DIR" -name '*.sh' | sort | while IFS= read -r FILE; do
+    source "$FILE"
 done
 
 source ~/working/soft/z/z.sh
-source /home/huoxu/working/soft/z/z.sh
 TZ='Asia/Shanghai'; export TZ
+
