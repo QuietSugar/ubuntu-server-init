@@ -35,6 +35,7 @@ if [ $? != 0 ]; then
 	source "${GO_PROFILE}"
 	l_success "golang $(go version) installed."
 	rm -f go.tar.gz
+ 	go env -w GOPROXY=https://goproxy.cn,direct
 else
 	l_skip "golang $(go version) already installed"
 fi
