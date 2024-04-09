@@ -19,6 +19,8 @@ THIS_GO_BIN_DIR_PATH="${THIS_GO_DIR}/go/bin"
 # go安装的命令的PATH
 GO_PKG_BIN_DIR_PATH="${HOME}/go/bin"
 
+# 确定文件夹存在
+mkdir -p "${HOME}/.xu/source"
 GO_PROFILE="${HOME}/.xu/source/go.profile.sh"
 
 # Install golang
