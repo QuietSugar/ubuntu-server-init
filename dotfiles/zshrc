@@ -1,3 +1,5 @@
+#zmodload zsh/zprof
+
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
@@ -26,12 +28,20 @@ export NVM_DIR="$HOME/.nvm"
 # 执行系统
 source ~/.profile
 
-SOURCE_DIR="${HOME}/.xu/source/"
-# 遍历执行source
-find "$SOURCE_DIR" -name '*.sh' | sort | while IFS= read -r FILE; do
-    source "$FILE"
-done
 
 source ~/working/soft/z/z.sh
 TZ='Asia/Shanghai'; export TZ
 
+
+#zprof
+eval "$(vfox activate zsh)"
+
+
+# set user's private env if it exists
+if [ -d "$HOME/.xu-command/source" ]; then
+  while IFS= read -r -d '' FILE; do
+    if [ -f "$FILE" ]; then
+      source "$FILE" || echo "[WARN] Failed to source: $FILE" >&2
+    fi
+  done < <(find "$HOME/.xu-command/source" -name '*.sh' -print0 | sort -z)
+fi
