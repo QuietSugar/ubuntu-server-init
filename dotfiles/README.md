@@ -1,6 +1,6 @@
 # dotfiles
 
-采用rcm管理
+采用 rcm 管理
 
 - 将一个文件加入dotfile的管理
 
@@ -12,15 +12,19 @@ mkrc your_file_name
 
 ```
 
-- 如何取消一个文件的管理,将软链接还原成文件
+- 管理文件
 
 ```shell
-cd $HOME
-# Erase link
-rcdn your_file_name
-# Create the copy
-rcup -C your_file_name
-# 此时文件还在rcm中,若不想再管理,在rcm中删除即可
+export dotfiles_dir=${HOME}/git-repo/github.com/QuietSugar/ubuntu-server-init/dotfiles
+
+# rcdn → 清理 dotfiles（移除符号链接，恢复原始状态）
+RCRC=${dotfiles_dir}/rcrc rcdn -d ${dotfiles_dir}
+# rcup → 部署/更新 dotfiles（将文件链接到正确位置）
+RCRC=${dotfiles_dir}/rcrc rcup -d ${dotfiles_dir}
+# mkrc → 将文件纳入 rcm 管理
+RCRC=${dotfiles_dir}/rcrc mkrc -d ${dotfiles_dir}
+# lsrc → 列出受管理的 dotfiles
+RCRC=${dotfiles_dir}/rcrc lsrc -d ${dotfiles_dir}
 ```
 
 
