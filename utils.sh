@@ -287,9 +287,3 @@ function install_font() {
         l_success "font ${FONT_NAME} installed."
     fi
 }
-
-function git_clone_to_xu_repo() {
-    SITE_REPO_URL=$1
-    cd "${HOME}/.xu/repo"
-    git clone "https://ghproxy.com/$SITE_REPO_URL" > /dev/null 2>&1
-}
