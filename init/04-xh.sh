@@ -19,7 +19,7 @@ echo "Downloading xh..."
 
 temp_dir=$(mktemp -dt xh.XXXXXX)
 trap 'rm -rf "$temp_dir"' EXIT INT TERM
-cd "$temp_dir"
+cd "${temp_dir}"
 
 if ! fetch xh.tar.gz "$url"; then
     echo "Could not download tarball"
@@ -33,7 +33,7 @@ xh_file_path="$xh_installdir"/xh
 xh_version=$("$xh_file_path" -V)
 
 l_success "${xh_version} has been installed to:"
-l_success " • ${xh_file}"
+l_success " • ${xh_file_path}"
 
 
 

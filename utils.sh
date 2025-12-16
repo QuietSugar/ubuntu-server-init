@@ -75,7 +75,7 @@ function install_remote_deb() {
     l_warn "installing $PACKAGE"
 
     FILE_NAME=$(basename $URL)
-    xh --download $URL -o "${FILE_NAME}"
+    fetch "${FILE_NAME}" ${URL}
     sudo dpkg -i "./${FILE_NAME}"
 
     rm $FILE_NAME
@@ -132,7 +132,7 @@ function install_prebuilt_bin() {
         l_skip "${CMD} already installed."
     else
         l_warn "installing ${CMD}"
-        xh --download "${URL}" -o "${CMD}"
+        fetch "${CMD}" "${URL}"
         chmod a+x "${CMD}"
         sudo mv "${CMD}" "${BIN_DIR}/${CMD}"
         l_success "${CMD} installed."
@@ -148,7 +148,7 @@ function install_prebuilt_zipbin() {
         l_skip "${CMD} already installed."
     else
         l_warn "installing ${CMD}"
-        xh --download "${URL}" -o "${CMD}.zip"
+        fetch "${CMD}.zip" "${URL}"
         unzip "${CMD}.zip"
         chmod a+x "${CMD}"
         sudo mv "${CMD}" "${BIN_DIR}/${CMD}"
