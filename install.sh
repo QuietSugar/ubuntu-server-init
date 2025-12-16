@@ -22,7 +22,7 @@ get_latest_release_url(){
     if [ -n "${RELEASE_FILE_URL}" ]; then
         echo "${RELEASE_FILE_URL}"
     else
-        echo "https://github.com/QuietSugar/ubunt-server-init/archive/refs/heads/master.zip"
+        echo "https://codeload.github.com/QuietSugar/ubuntu-server-init/zip/refs/heads/master"
     fi
 }
 download_and_un_tar(){
