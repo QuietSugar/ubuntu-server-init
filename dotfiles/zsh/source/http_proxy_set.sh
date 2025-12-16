@@ -1,8 +1,10 @@
 #!/bin/bash
 
 function setup_proxy() {
-    mkdir -p ~/.zsh/source
-    local proxy_file="${HOME}/.ubunt-server-init/source/proxy.sh"
+    local zsh_source_path
+    zsh_source_path=~/.zsh/source
+    mkdir -p ${zsh_source_path}
+    local proxy_file="${zsh_source_path}/proxy.sh"
     if [ -s "${proxy_file}" ]; then
       source ${proxy_file}
     fi
