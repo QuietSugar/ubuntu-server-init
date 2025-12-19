@@ -42,5 +42,6 @@ if [ -n "$GIT_PROXY_CONFIG" ]; then
 else
     git pull origin master
 fi
+git branch --set-upstream-to=origin/master master
 
 git status
