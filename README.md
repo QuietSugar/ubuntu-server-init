@@ -9,7 +9,8 @@
 ```
 curl -fsSL https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/master/install.sh | bash
 ```
-> 如果无法访问github,那就使用
+- 一键安装（CN）
+
 ```
 curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/master/install.sh | bash
 ```

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -f "INFO" ] && [ "$(sed 's/^[[:space:]]*//;s/[[:space:]]*$//' .gitkeep)" = "UBUNTU-SERVER-INIT" ] || { echo "不是预期目录"; exit 1; }
+[ -f "INFO" ] && [ "$(sed 's/^[[:space:]]*//;s/[[:space:]]*$//' INFO)" = "UBUNTU-SERVER-INIT" ] || { echo "不是预期目录"; exit 1; }
 
 if ! command -v git &> /dev/null; then
     echo "错误: 系统中未安装 git 命令"
