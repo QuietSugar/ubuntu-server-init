@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+    branches: [master]
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y shellcheck
+
+      - name: Run ShellCheck
+        run: |
+          shellcheck *.sh init/*.sh
+
+  release:
+    name: Release
+    needs: shellcheck
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Release Archives
+        run: |
+          mkdir -p dist
+          zip -r dist/ubuntu-server-init.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "dist/*"
+          tar czf dist/ubuntu-server-init.tar.gz \
+            --exclude=".git" \
+            --exclude=".github" \
+            --exclude="dist" \
+            .
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/ubuntu-server-init.zip
+            dist/ubuntu-server-init.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
