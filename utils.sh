@@ -223,6 +223,15 @@ function get_distrib_codename() {
     echo "${DISTRIB_CODENAME}"
 }
 
+function get_distrib_id() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        echo "${ID}"
+    else
+        echo "ubuntu"
+    fi
+}
+
 function get_extension() {
     FILENAME="$1"
     EXT="${FILENAME##*.}"

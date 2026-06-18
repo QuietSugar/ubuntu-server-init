@@ -12,9 +12,25 @@ if ! grep -q "aliyun" /etc/apt/sources.list 2>/dev/null; then
         exit 1
     fi
 
-    l_info "配置阿里云 apt 源 (版本: ${DISTRIB_CODENAME})..."
+    DISTRIB_ID=$(get_distrib_id)
+    l_info "配置阿里云 apt 源 (系统: ${DISTRIB_ID}, 版本: ${DISTRIB_CODENAME})..."
 
-    sudo tee /etc/apt/sources.list >/dev/null <<EOF
+    if [ "${DISTRIB_ID}" == "debian" ]; then
+        sudo tee /etc/apt/sources.list >/dev/null <<EOF
+deb https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME} main contrib non-free non-free-firmware
+deb-src https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME} main contrib non-free non-free-firmware
+
+deb https://mirrors.aliyun.com/debian-security/ ${DISTRIB_CODENAME}-security main contrib non-free non-free-firmware
+deb-src https://mirrors.aliyun.com/debian-security/ ${DISTRIB_CODENAME}-security main contrib non-free non-free-firmware
+
+deb https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME}-updates main contrib non-free non-free-firmware
+deb-src https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME}-updates main contrib non-free non-free-firmware
+
+deb https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME}-backports main contrib non-free non-free-firmware
+deb-src https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME}-backports main contrib non-free non-free-firmware
+EOF
+    else
+        sudo tee /etc/apt/sources.list >/dev/null <<EOF
 deb https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME} main restricted universe multiverse
 deb-src https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME} main restricted universe multiverse
 
@@ -30,6 +46,7 @@ deb-src https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-updates main rest
 deb https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-backports main restricted universe multiverse
 deb-src https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-backports main restricted universe multiverse
 EOF
+    fi
 
     l_success "apt sources list configured"
     l_info "apt update"
