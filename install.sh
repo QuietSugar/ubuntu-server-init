@@ -19,7 +19,11 @@ get_latest_release_url(){
     if [ -n "${RELEASE_FILE_URL}" ]; then
         echo "${RELEASE_FILE_URL}"
     else
-        echo "https://codeload.github.com/QuietSugar/ubuntu-server-init/zip/refs/heads/dev"
+        local url="https://codeload.github.com/QuietSugar/ubuntu-server-init/zip/refs/heads/dev"
+        if [ -n "${GITHUB_PROXY}" ]; then
+            url="${GITHUB_PROXY}${url}"
+        fi
+        echo "${url}"
     fi
 }
 download_and_un_tar(){

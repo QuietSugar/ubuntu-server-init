@@ -232,6 +232,15 @@ function get_distrib_id() {
     fi
 }
 
+function fetch_github_raw() {
+    local output="$1"
+    local url="$2"
+    if [ -n "${GITHUB_PROXY}" ]; then
+        url="${GITHUB_PROXY}${url}"
+    fi
+    fetch "${output}" "${url}"
+}
+
 function get_extension() {
     FILENAME="$1"
     EXT="${FILENAME##*.}"
