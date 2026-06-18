@@ -7,4 +7,4 @@ l_info "apt autoremove"
 sudo -E apt autoremove
 
 l_info "请重新打开shell"
-l_info "you can install golang java maven nodejs by 'bash init/dev-env.sh'"
+l_info "you can install golang java maven nodejs by 'bash dev-env.sh' (optional, large downloads)"
