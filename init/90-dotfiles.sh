@@ -57,8 +57,7 @@ fi
 # 安装 zsh 插件
 clone_plugin() {
     local plugin="$1"
-    local github_url="$2"
-    local gitee_url="$3"
+    local url="$2"
     local plugin_dir="${HOME}/.zsh/${plugin}"
 
     if [ -d "$plugin_dir" ]; then
@@ -66,15 +65,8 @@ clone_plugin() {
         return 0
     fi
 
-    if git clone --depth=1 "$github_url" "$plugin_dir" 2>/dev/null; then
-        l_success "cloned $plugin from GitHub"
-        return 0
-    fi
-
-    l_warn "failed to clone $plugin from GitHub, trying Gitee mirror..."
-    rm -rf "$plugin_dir"
-    if git clone --depth=1 "$gitee_url" "$plugin_dir" 2>/dev/null; then
-        l_success "cloned $plugin from Gitee"
+    if git clone --depth=1 "$url" "$plugin_dir" 2>/dev/null; then
+        l_success "cloned $plugin"
         return 0
     fi
 
@@ -83,21 +75,10 @@ clone_plugin() {
     return 0
 }
 
-clone_plugin powerlevel10k \
-    https://github.com/romkatv/powerlevel10k.git \
-    https://gitee.com/mirrors/powerlevel10k.git
-
-clone_plugin zsh-autosuggestions \
-    https://github.com/zsh-users/zsh-autosuggestions.git \
-    https://gitee.com/mirrors/zsh-autosuggestions.git
-
-clone_plugin zsh-syntax-highlighting \
-    https://github.com/zsh-users/zsh-syntax-highlighting.git \
-    https://gitee.com/mirrors/zsh-syntax-highlighting.git
-
-clone_plugin zsh-completions \
-    https://github.com/zsh-users/zsh-completions.git \
-    https://gitee.com/mirrors/zsh-completions.git
+clone_plugin powerlevel10k https://github.com/romkatv/powerlevel10k.git
+clone_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions.git
+clone_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting.git
+clone_plugin zsh-completions https://github.com/zsh-users/zsh-completions.git
 
 touch "${FLAG_FILE}"
 l_success "dotfiles configured."
