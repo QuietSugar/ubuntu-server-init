@@ -52,7 +52,9 @@ EOF
     l_info "apt update"
     sudo -E apt update >/dev/null 2>&1
     l_info "apt dist-upgrade"
-    sudo apt dist-upgrade -y
+    if ! sudo apt dist-upgrade -y; then
+        l_warn "apt dist-upgrade failed, continuing initialization"
+    fi
 else
     l_skip "apt sources list already configured"
 fi
