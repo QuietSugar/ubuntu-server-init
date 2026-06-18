@@ -3,40 +3,54 @@
 set -e
 
 UBUNTU_SERVER_INIT_DIR="${HOME}/.local/share/ubuntu-server-init"
-GITHUB_PROXY_CONFIG_FILE="${HOME}/.config/ubuntu-server-init/github_proxy"
+PROXY_CONFIG_FILE="${HOME}/.config/ubuntu-server-init/proxy"
 
-load_or_ask_github_proxy(){
-    if [ -n "${GITHUB_PROXY}" ]; then
+save_proxy_config(){
+    local proxy_url="$1"
+    mkdir -p "$(dirname "${PROXY_CONFIG_FILE}")"
+    cat > "${PROXY_CONFIG_FILE}" <<EOF
+export http_proxy="${proxy_url}"
+export https_proxy="${proxy_url}"
+export HTTP_PROXY="${proxy_url}"
+export HTTPS_PROXY="${proxy_url}"
+EOF
+}
+
+load_proxy_config(){
+    if [ -f "${PROXY_CONFIG_FILE}" ]; then
+        # shellcheck source=/dev/null
+        source "${PROXY_CONFIG_FILE}"
+    fi
+}
+
+load_or_ask_proxy(){
+    if [ -n "${https_proxy}" ] || [ -n "${HTTPS_PROXY}" ]; then
         return 0
     fi
 
-    if [ -f "${GITHUB_PROXY_CONFIG_FILE}" ]; then
-        local saved_proxy
-        saved_proxy=$(cat "${GITHUB_PROXY_CONFIG_FILE}")
-        if [ -n "${saved_proxy}" ]; then
-            if [ -t 0 ]; then
-                read -rp "Use saved GitHub proxy '${saved_proxy}'? [Y/n]: " answer
-                case "${answer}" in
-                    n|N)
-                        ;;
-                    *)
-                        export GITHUB_PROXY="${saved_proxy}"
-                        return 0
-                        ;;
-                esac
-            else
-                export GITHUB_PROXY="${saved_proxy}"
-                return 0
-            fi
+    load_proxy_config
+
+    if [ -n "${https_proxy}" ] || [ -n "${HTTPS_PROXY}" ]; then
+        if [ -t 0 ]; then
+            read -rp "Use saved proxy '${https_proxy:-${HTTPS_PROXY}}'? [Y/n]: " answer
+            case "${answer}" in
+                n|N)
+                    unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
+                    ;;
+                *)
+                    return 0
+                    ;;
+            esac
+        else
+            return 0
         fi
     fi
 
     if [ -t 0 ]; then
-        read -rp "Enter GitHub proxy URL (e.g. https://your-proxy/https://, press Enter to skip): " proxy_url
+        read -rp "Enter HTTP/HTTPS proxy (e.g. http://192.168.1.100:7890, press Enter to skip): " proxy_url
         if [ -n "${proxy_url}" ]; then
-            mkdir -p "$(dirname "${GITHUB_PROXY_CONFIG_FILE}")"
-            echo "${proxy_url}" > "${GITHUB_PROXY_CONFIG_FILE}"
-            export GITHUB_PROXY="${proxy_url}"
+            save_proxy_config "${proxy_url}"
+            load_proxy_config
         fi
     fi
 }
@@ -56,11 +70,7 @@ get_latest_release_url(){
     if [ -n "${RELEASE_FILE_URL}" ]; then
         echo "${RELEASE_FILE_URL}"
     else
-        local url="https://codeload.github.com/QuietSugar/ubuntu-server-init/zip/refs/heads/dev"
-        if [ -n "${GITHUB_PROXY}" ]; then
-            url="${GITHUB_PROXY}${url}"
-        fi
-        echo "${url}"
+        echo "https://codeload.github.com/QuietSugar/ubuntu-server-init/zip/refs/heads/dev"
     fi
 }
 download_and_un_tar(){
@@ -89,7 +99,7 @@ main(){
   if [ -d "${UBUNTU_SERVER_INIT_DIR}" ]; then
     echo "安装目录已存在: ${UBUNTU_SERVER_INIT_DIR}"
   else
-    load_or_ask_github_proxy
+    load_or_ask_proxy
     download_and_un_tar
     cd "${UBUNTU_SERVER_INIT_DIR}"
     bash main.sh

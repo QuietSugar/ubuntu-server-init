@@ -35,9 +35,6 @@ else
     else
         l_warn "apt.fury.io is unreachable, installing vfox from GitHub release..."
         DEB_URL="https://github.com/version-fox/vfox/releases/download/${VFOX_VERSION}/vfox_${VFOX_VERSION#v}_linux_${VFOX_ARCH}.deb"
-        if [ -n "${GITHUB_PROXY}" ]; then
-            DEB_URL="${GITHUB_PROXY}${DEB_URL}"
-        fi
         if ! install_remote_deb "${DEB_URL}" vfox; then
             l_warn "vfox installation failed, continuing initialization"
             exit 0
