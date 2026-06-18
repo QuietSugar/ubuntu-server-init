@@ -55,28 +55,49 @@ if [ -d "${DOTFILES_DIR}/zsh/source" ]; then
 fi
 
 # 安装 zsh 插件
-for plugin in powerlevel10k zsh-autosuggestions zsh-syntax-highlighting zsh-completions; do
-    plugin_dir="${HOME}/.zsh/${plugin}"
+clone_plugin() {
+    local plugin="$1"
+    local github_url="$2"
+    local gitee_url="$3"
+    local plugin_dir="${HOME}/.zsh/${plugin}"
+
     if [ -d "$plugin_dir" ]; then
         l_skip "$plugin_dir already exists, skipping clone."
-    else
-        case "$plugin" in
-            powerlevel10k)
-                git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$plugin_dir"
-                ;;
-            zsh-autosuggestions)
-                git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "$plugin_dir"
-                ;;
-            zsh-syntax-highlighting)
-                git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "$plugin_dir"
-                ;;
-            zsh-completions)
-                git clone --depth=1 https://github.com/zsh-users/zsh-completions.git "$plugin_dir"
-                ;;
-        esac
-        l_success "cloned $plugin"
+        return 0
     fi
-done
+
+    if git clone --depth=1 "$github_url" "$plugin_dir" 2>/dev/null; then
+        l_success "cloned $plugin from GitHub"
+        return 0
+    fi
+
+    l_warn "failed to clone $plugin from GitHub, trying Gitee mirror..."
+    rm -rf "$plugin_dir"
+    if git clone --depth=1 "$gitee_url" "$plugin_dir" 2>/dev/null; then
+        l_success "cloned $plugin from Gitee"
+        return 0
+    fi
+
+    rm -rf "$plugin_dir"
+    l_warn "failed to clone $plugin, continuing without it"
+    return 0
+}
+
+clone_plugin powerlevel10k \
+    https://github.com/romkatv/powerlevel10k.git \
+    https://gitee.com/mirrors/powerlevel10k.git
+
+clone_plugin zsh-autosuggestions \
+    https://github.com/zsh-users/zsh-autosuggestions.git \
+    https://gitee.com/mirrors/zsh-autosuggestions.git
+
+clone_plugin zsh-syntax-highlighting \
+    https://github.com/zsh-users/zsh-syntax-highlighting.git \
+    https://gitee.com/mirrors/zsh-syntax-highlighting.git
+
+clone_plugin zsh-completions \
+    https://github.com/zsh-users/zsh-completions.git \
+    https://gitee.com/mirrors/zsh-completions.git
 
 touch "${FLAG_FILE}"
 l_success "dotfiles configured."
