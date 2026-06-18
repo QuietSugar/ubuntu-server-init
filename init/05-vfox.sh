@@ -38,7 +38,10 @@ else
         if [ -n "${GITHUB_PROXY}" ]; then
             DEB_URL="${GITHUB_PROXY}${DEB_URL}"
         fi
-        install_remote_deb "${DEB_URL}" vfox
+        if ! install_remote_deb "${DEB_URL}" vfox; then
+            l_warn "vfox installation failed, continuing initialization"
+            exit 0
+        fi
     fi
     l_success "vfox installed"
 fi
