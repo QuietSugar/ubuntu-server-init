@@ -37,9 +37,15 @@ function l_warn() {
 function run_scripts_in_dir() {
     DIR="$1"
     FILES=$(find "$ROOT_DIR/$DIR" -name '*.sh' | sort)
+    TOTAL=$(echo "$FILES" | wc -l | tr -d ' ')
+    INDEX=1
     for FILE in $FILES; do
-        l_warn "run $FILE"
-        "$SH" "$FILE"
+        l_warn "[${INDEX}/${TOTAL}] run $(basename "$FILE")"
+        if ! "$SH" "$FILE"; then
+            l_error "[${INDEX}/${TOTAL}] $(basename "$FILE") failed"
+            exit 1
+        fi
+        INDEX=$((INDEX + 1))
     done
 }
 
@@ -60,26 +66,30 @@ function install_via_apt() {
 
 function install_remote_deb() {
     URL="$1"
-
-    if [ $# == 2 ]; then
-        PACKAGE="$2"
-    fi
+    PACKAGE="${2:-}"
 
     if [ -n "$PACKAGE" ]; then
-        sudo dpkg -s "$PACKAGE" &> /dev/null
-        if [ $? == 0 ]; then
+        if sudo dpkg -s "$PACKAGE" &> /dev/null; then
             l_skip "package $PACKAGE already installed."
-            return
+            return 0
         fi
     fi
 
     l_warn "installing $PACKAGE"
 
     FILE_NAME=$(basename "$URL")
-    fetch "${FILE_NAME}" "${URL}"
-    sudo dpkg -i "./${FILE_NAME}"
+    if ! fetch "${FILE_NAME}" "${URL}"; then
+        l_error "failed to download ${PACKAGE} from ${URL}"
+        return 1
+    fi
 
-    rm "$FILE_NAME"
+    if ! sudo dpkg -i "./${FILE_NAME}"; then
+        l_error "failed to install ${PACKAGE}"
+        rm -f "./${FILE_NAME}"
+        return 1
+    fi
+
+    rm -f "./${FILE_NAME}"
 
     l_success "deb package ${PACKAGE} installed."
 }

@@ -17,34 +17,34 @@ if ! grep -q "aliyun" /etc/apt/sources.list 2>/dev/null; then
 
     if [ "${DISTRIB_ID}" == "debian" ]; then
         sudo tee /etc/apt/sources.list >/dev/null <<EOF
-deb https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME} main contrib non-free non-free-firmware
-deb-src https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME} main contrib non-free non-free-firmware
+deb https://${APT_MIRROR}/debian/ ${DISTRIB_CODENAME} main contrib non-free non-free-firmware
+deb-src https://${APT_MIRROR}/debian/ ${DISTRIB_CODENAME} main contrib non-free non-free-firmware
 
-deb https://mirrors.aliyun.com/debian-security/ ${DISTRIB_CODENAME}-security main contrib non-free non-free-firmware
-deb-src https://mirrors.aliyun.com/debian-security/ ${DISTRIB_CODENAME}-security main contrib non-free non-free-firmware
+deb https://${APT_MIRROR}/debian-security/ ${DISTRIB_CODENAME}-security main contrib non-free non-free-firmware
+deb-src https://${APT_MIRROR}/debian-security/ ${DISTRIB_CODENAME}-security main contrib non-free non-free-firmware
 
-deb https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME}-updates main contrib non-free non-free-firmware
-deb-src https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME}-updates main contrib non-free non-free-firmware
+deb https://${APT_MIRROR}/debian/ ${DISTRIB_CODENAME}-updates main contrib non-free non-free-firmware
+deb-src https://${APT_MIRROR}/debian/ ${DISTRIB_CODENAME}-updates main contrib non-free non-free-firmware
 
-deb https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME}-backports main contrib non-free non-free-firmware
-deb-src https://mirrors.aliyun.com/debian/ ${DISTRIB_CODENAME}-backports main contrib non-free non-free-firmware
+deb https://${APT_MIRROR}/debian/ ${DISTRIB_CODENAME}-backports main contrib non-free non-free-firmware
+deb-src https://${APT_MIRROR}/debian/ ${DISTRIB_CODENAME}-backports main contrib non-free non-free-firmware
 EOF
     else
         sudo tee /etc/apt/sources.list >/dev/null <<EOF
-deb https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME} main restricted universe multiverse
-deb-src https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME} main restricted universe multiverse
+deb https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME} main restricted universe multiverse
+deb-src https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME} main restricted universe multiverse
 
-deb https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-security main restricted universe multiverse
-deb-src https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-security main restricted universe multiverse
+deb https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME}-security main restricted universe multiverse
+deb-src https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME}-security main restricted universe multiverse
 
-deb https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-updates main restricted universe multiverse
-deb-src https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-updates main restricted universe multiverse
+deb https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME}-updates main restricted universe multiverse
+deb-src https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME}-updates main restricted universe multiverse
 
-# deb https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-proposed main restricted universe multiverse
-# deb-src https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-proposed main restricted universe multiverse
+# deb https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME}-proposed main restricted universe multiverse
+# deb-src https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME}-proposed main restricted universe multiverse
 
-deb https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-backports main restricted universe multiverse
-deb-src https://mirrors.aliyun.com/ubuntu/ ${DISTRIB_CODENAME}-backports main restricted universe multiverse
+deb https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME}-backports main restricted universe multiverse
+deb-src https://${APT_MIRROR}/ubuntu/ ${DISTRIB_CODENAME}-backports main restricted universe multiverse
 EOF
     fi
 

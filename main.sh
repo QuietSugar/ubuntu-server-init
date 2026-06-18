@@ -3,6 +3,7 @@
 set -e
 # set -x
 
+. ./config.sh
 . ./utils.sh
 
 # trap ctrl-c and call ctrl_c()

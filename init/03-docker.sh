@@ -15,7 +15,7 @@ if [ ! -s "${DOCKER_KEY_FILE}" ]; then
     sudo mkdir -m 0755 -p /etc/apt/keyrings
 
     # https://download.docker.com/linux/${DOCKER_DISTRIB}/gpg
-    curl -fsSL "https://mirrors.aliyun.com/docker-ce/linux/${DOCKER_DISTRIB}/gpg" | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    curl -fsSL "https://${DOCKER_MIRROR}/docker-ce/linux/${DOCKER_DISTRIB}/gpg" | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 else
     l_skip "docker key file already installed."
 fi
@@ -28,7 +28,7 @@ if [ ! -s "${DOCKER_SOURCE_LIST_FILE}" ]; then
     else
         # 参考 https://developer.aliyun.com/mirror/docker-ce/?spm=a2c6h.25603864.0.0.2edd7610j7vsQ9
         echo \
-        "deb [arch=$(dpkg --print-architecture) signed-by=${DOCKER_KEY_FILE}] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/${DOCKER_DISTRIB} \
+        "deb [arch=$(dpkg --print-architecture) signed-by=${DOCKER_KEY_FILE}] https://${DOCKER_MIRROR}/docker-ce/linux/${DOCKER_DISTRIB} \
         ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         sudo -E apt update
 

@@ -75,10 +75,10 @@ clone_plugin() {
     return 0
 }
 
-clone_plugin powerlevel10k https://github.com/romkatv/powerlevel10k.git
-clone_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions.git
-clone_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting.git
-clone_plugin zsh-completions https://github.com/zsh-users/zsh-completions.git
+clone_plugin powerlevel10k "${P10K_REPO}"
+clone_plugin zsh-autosuggestions "${ZSH_AUTOSUGGESTIONS_REPO}"
+clone_plugin zsh-syntax-highlighting "${ZSH_SYNTAX_HIGHLIGHTING_REPO}"
+clone_plugin zsh-completions "${ZSH_COMPLETIONS_REPO}"
 
 touch "${FLAG_FILE}"
 l_success "dotfiles configured."
