@@ -241,6 +241,44 @@ function fetch_github_raw() {
     fetch "${output}" "${url}"
 }
 
+GITHUB_PROXY_CONFIG_FILE="${HOME}/.config/ubuntu-server-init/github_proxy"
+
+function load_or_ask_github_proxy() {
+    if [ -n "${GITHUB_PROXY}" ]; then
+        return 0
+    fi
+
+    if [ -f "${GITHUB_PROXY_CONFIG_FILE}" ]; then
+        local saved_proxy
+        saved_proxy=$(cat "${GITHUB_PROXY_CONFIG_FILE}")
+        if [ -n "${saved_proxy}" ]; then
+            if [ -t 0 ]; then
+                read -rp "Use saved GitHub proxy '${saved_proxy}'? [Y/n]: " answer
+                case "${answer}" in
+                    n|N)
+                        ;;
+                    *)
+                        export GITHUB_PROXY="${saved_proxy}"
+                        return 0
+                        ;;
+                esac
+            else
+                export GITHUB_PROXY="${saved_proxy}"
+                return 0
+            fi
+        fi
+    fi
+
+    if [ -t 0 ]; then
+        read -rp "Enter GitHub proxy URL (e.g. https://your-proxy/https://, press Enter to skip): " proxy_url
+        if [ -n "${proxy_url}" ]; then
+            mkdir -p "$(dirname "${GITHUB_PROXY_CONFIG_FILE}")"
+            echo "${proxy_url}" > "${GITHUB_PROXY_CONFIG_FILE}"
+            export GITHUB_PROXY="${proxy_url}"
+        fi
+    fi
+}
+
 function get_extension() {
     FILENAME="$1"
     EXT="${FILENAME##*.}"

@@ -3,6 +3,43 @@
 set -e
 
 UBUNTU_SERVER_INIT_DIR="${HOME}/.local/share/ubuntu-server-init"
+GITHUB_PROXY_CONFIG_FILE="${HOME}/.config/ubuntu-server-init/github_proxy"
+
+load_or_ask_github_proxy(){
+    if [ -n "${GITHUB_PROXY}" ]; then
+        return 0
+    fi
+
+    if [ -f "${GITHUB_PROXY_CONFIG_FILE}" ]; then
+        local saved_proxy
+        saved_proxy=$(cat "${GITHUB_PROXY_CONFIG_FILE}")
+        if [ -n "${saved_proxy}" ]; then
+            if [ -t 0 ]; then
+                read -rp "Use saved GitHub proxy '${saved_proxy}'? [Y/n]: " answer
+                case "${answer}" in
+                    n|N)
+                        ;;
+                    *)
+                        export GITHUB_PROXY="${saved_proxy}"
+                        return 0
+                        ;;
+                esac
+            else
+                export GITHUB_PROXY="${saved_proxy}"
+                return 0
+            fi
+        fi
+    fi
+
+    if [ -t 0 ]; then
+        read -rp "Enter GitHub proxy URL (e.g. https://your-proxy/https://, press Enter to skip): " proxy_url
+        if [ -n "${proxy_url}" ]; then
+            mkdir -p "$(dirname "${GITHUB_PROXY_CONFIG_FILE}")"
+            echo "${proxy_url}" > "${GITHUB_PROXY_CONFIG_FILE}"
+            export GITHUB_PROXY="${proxy_url}"
+        fi
+    fi
+}
 
 fetch(){
     if which curl > /dev/null; then
@@ -52,6 +89,7 @@ main(){
   if [ -d "${UBUNTU_SERVER_INIT_DIR}" ]; then
     echo "安装目录已存在: ${UBUNTU_SERVER_INIT_DIR}"
   else
+    load_or_ask_github_proxy
     download_and_un_tar
     cd "${UBUNTU_SERVER_INIT_DIR}"
     bash main.sh
