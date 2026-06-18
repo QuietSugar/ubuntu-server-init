@@ -7,12 +7,12 @@
 - 一键安装
 
 ```
-curl -fsSL https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/dev/install.sh | bash
 ```
 - 一键安装（CN）
 
 ```
-curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/master/install.sh | bash
+curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/dev/install.sh | bash
 ```
 
 # 从旧版本迁移（移除 rcm）
