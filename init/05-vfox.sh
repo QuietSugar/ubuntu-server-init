@@ -7,13 +7,38 @@ set -e
 if command -v vfox &> /dev/null; then
     l_skip "vfox already installed"
 else
-  echo "deb [trusted=yes] https://apt.fury.io/versionfox/ /" | sudo tee /etc/apt/sources.list.d/versionfox.list
-  sudo -E apt update
-  sudo -E apt install vfox
-  l_success "vfox installed"
+    VFOX_VERSION="${VFOX_VERSION:-v1.0.11}"
+    ARCH=$(dpkg --print-architecture)
+    case "${ARCH}" in
+        arm64)
+            VFOX_ARCH="aarch64"
+            ;;
+        amd64)
+            VFOX_ARCH="x86_64"
+            ;;
+        armhf)
+            VFOX_ARCH="armv7"
+            ;;
+        i386)
+            VFOX_ARCH="i386"
+            ;;
+        *)
+            VFOX_ARCH="${ARCH}"
+            ;;
+    esac
+
+    # 优先尝试 apt 源安装
+    if curl -fsSL --connect-timeout 5 --max-time 10 "https://apt.fury.io/versionfox/" >/dev/null 2>&1; then
+        echo "deb [trusted=yes] https://apt.fury.io/versionfox/ /" | sudo tee /etc/apt/sources.list.d/versionfox.list
+        sudo -E apt update
+        sudo -E apt install -y vfox
+    else
+        l_warn "apt.fury.io is unreachable, installing vfox from GitHub release..."
+        DEB_URL="https://github.com/version-fox/vfox/releases/download/${VFOX_VERSION}/vfox_${VFOX_VERSION#v}_linux_${VFOX_ARCH}.deb"
+        if [ -n "${GITHUB_PROXY}" ]; then
+            DEB_URL="${GITHUB_PROXY}${DEB_URL}"
+        fi
+        install_remote_deb "${DEB_URL}" vfox
+    fi
+    l_success "vfox installed"
 fi
-
-
-
-
-
