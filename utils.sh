@@ -232,58 +232,6 @@ function get_distrib_id() {
     fi
 }
 
-PROXY_CONFIG_FILE="${HOME}/.config/ubuntu-server-init/proxy"
-
-function save_proxy_config() {
-    local proxy_url="$1"
-    mkdir -p "$(dirname "${PROXY_CONFIG_FILE}")"
-    cat > "${PROXY_CONFIG_FILE}" <<EOF
-export http_proxy="${proxy_url}"
-export https_proxy="${proxy_url}"
-export HTTP_PROXY="${proxy_url}"
-export HTTPS_PROXY="${proxy_url}"
-EOF
-}
-
-function load_proxy_config() {
-    if [ -f "${PROXY_CONFIG_FILE}" ]; then
-        # shellcheck source=/dev/null
-        source "${PROXY_CONFIG_FILE}"
-    fi
-}
-
-function load_or_ask_proxy() {
-    if [ -n "${https_proxy}" ] || [ -n "${HTTPS_PROXY}" ]; then
-        return 0
-    fi
-
-    load_proxy_config
-
-    if [ -n "${https_proxy}" ] || [ -n "${HTTPS_PROXY}" ]; then
-        if [ -t 0 ]; then
-            read -rp "Use saved proxy '${https_proxy:-${HTTPS_PROXY}}'? [Y/n]: " answer
-            case "${answer}" in
-                n|N)
-                    unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
-                    ;;
-                *)
-                    return 0
-                    ;;
-            esac
-        else
-            return 0
-        fi
-    fi
-
-    if [ -t 0 ]; then
-        read -rp "Enter HTTP/HTTPS proxy (e.g. http://192.168.1.100:7890, press Enter to skip): " proxy_url
-        if [ -n "${proxy_url}" ]; then
-            save_proxy_config "${proxy_url}"
-            load_proxy_config
-        fi
-    fi
-}
-
 function get_extension() {
     FILENAME="$1"
     EXT="${FILENAME##*.}"

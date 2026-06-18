@@ -4,15 +4,18 @@
 
 # 安装
 
-- 一键安装
+如果当前终端可以访问 GitHub，直接执行：
 
-```
+```bash
 curl -fsSL https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/dev/install.sh | bash
 ```
-- 一键安装（CN）
 
-```
-curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/dev/install.sh | bash
+如果需要代理，先设置环境变量再执行：
+
+```bash
+export https_proxy=http://your-proxy:port
+export http_proxy=http://your-proxy:port
+curl -fsSL https://raw.githubusercontent.com/QuietSugar/ubuntu-server-init/refs/heads/dev/install.sh | bash
 ```
 
 # 从旧版本迁移（移除 rcm）
