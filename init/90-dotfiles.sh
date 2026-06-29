@@ -12,6 +12,9 @@ else
 	l_info "configuring dotfiles..."
 	if [ -s "${HOME}/.zshrc" ]; then
   	l_info "backup .zshrc file."
+  	if [ -e "${HOME}/.zshrc.bak" ]; then
+  	  mv "${HOME}/.zshrc.bak" "${HOME}/.zshrc.bak.$(date +%Y%m%d%H%M%S)"
+  	fi
   	mv "${HOME}/.zshrc" "${HOME}/.zshrc.bak"
   fi
   # 使用rcm管理

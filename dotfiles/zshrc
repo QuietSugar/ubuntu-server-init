@@ -16,10 +16,7 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # completions
-export fpath=(~/.zsh/zsh-completions/src $fpath)
-
-# 执行系统
-source ~/.profile
+fpath=(~/.zsh/zsh-completions/src $fpath)
 
 TZ='Asia/Shanghai'; export TZ
 

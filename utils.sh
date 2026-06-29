@@ -46,9 +46,7 @@ function run_scripts_in_dir() {
 function install_via_apt() {
     PACKAGE=$1
 
-    sudo dpkg -L "$PACKAGE" > /dev/null 2>&1
-
-    if [ $? != 0 ]; then
+    if ! dpkg-query -W -f='${Status}' "$PACKAGE" 2>/dev/null | grep -q "install ok installed"; then
         l_warn "installing $PACKAGE"
         sudo -E apt install -y $PACKAGE
         l_success "package ${PACKAGE} installed."

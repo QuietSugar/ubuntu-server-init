@@ -24,7 +24,7 @@ if [ ! -s "${DOCKER_SOURCE_LIST_FILE}" ]; then
         l_error "DISTRIB_CODENAME is empty."
     else
         # 参考 https://developer.aliyun.com/mirror/docker-ce/?spm=a2c6h.25603864.0.0.2edd7610j7vsQ9
-        sudo echo \
+        echo \
         "deb [arch=$(dpkg --print-architecture) signed-by=${DOCKER_KEY_FILE}] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu \
         ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         sudo -E apt update
