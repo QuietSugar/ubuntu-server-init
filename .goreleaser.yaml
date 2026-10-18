@@ -1,0 +1,33 @@
+version: 2
+
+project_name: ubuntu-server-init
+
+builds:
+  - id: usinit
+    main: .
+    binary: usinit
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{ .Tag }}
+
+archives:
+  - id: bins
+    formats: [binary]
+    name_template: "usinit_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"

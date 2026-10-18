@@ -1,0 +1,36 @@
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# powerlevel10k 的主体
+source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# autosuggestions 同一行的灰色提示,记住以前输入的命令
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# syntax-highlighting
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# completions
+export fpath=(~/.zsh/zsh-completions/src $fpath)
+
+# 执行系统
+source ~/.profile
+
+TZ='Asia/Shanghai'; export TZ
+
+eval "$(vfox activate zsh)"
+
+
+# set user's private env if it exists
+if [ -d "$HOME/.zsh/source" ]; then
+  while IFS= read -r -d '' FILE; do
+    if [ -f "$FILE" ]; then
+      source "$FILE" || echo "[WARN] Failed to source: $FILE" >&2
+    fi
+  done < <(find "$HOME/.zsh/source" -name '*.sh' -print0 | sort -z)
+fi

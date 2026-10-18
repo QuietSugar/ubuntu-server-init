@@ -1,0 +1,11 @@
+# ShellCheck configuration for ubuntu-server-init
+
+# Allow sourcing external files (utils.sh, etc.)
+disable=SC1091
+
+# Allow unused variables in utility functions
+disable=SC2034
+
+# 注：ShellCheck 没有 check-sourced 指令，写了会导致解析失败（SC1134）；
+# 如需跟随 source，请用 external-sources=true 并配合 source-path。
+color=always
